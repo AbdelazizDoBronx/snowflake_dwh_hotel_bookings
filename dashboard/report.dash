@@ -1,0 +1,651 @@
+{
+  "spec_version": 2,
+  "spec_revision": 18,
+  "version": 2,
+  "title": "report",
+  "tabs": [
+    {
+      "tab_id": "tab-0",
+      "title": "",
+      "tiles": [
+        {
+          "tile_id": "chart-a8f63eec257d",
+          "title": "Monthly revenue trend",
+          "type": "chart",
+          "spec": {
+            "mark": {
+              "type": "line",
+              "point": false
+            },
+            "encoding": {
+              "x": {
+                "scale": {
+                  "type": "utc"
+                },
+                "field": "MNTH",
+                "type": "temporal",
+                "title": "Months",
+                "sort": "ascending"
+              },
+              "y": {
+                "field": "TOTAL_AMOUNT",
+                "type": "quantitative",
+                "title": "AMOUNT",
+                "aggregate": "sum",
+                "axis": {
+                  "labelExpr": "abs(datum.value) >= 1000 ? format(datum.value, '.3~s') : format(datum.value, '')"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "MNTH",
+                  "title": "Months"
+                },
+                {
+                  "field": "TOTAL_AMOUNT",
+                  "aggregate": "sum",
+                  "title": "AMOUNT"
+                }
+              ]
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  },
+                  "dataPoints": {
+                    "enabled": false
+                  }
+                },
+                "chartType": "line"
+              }
+            }
+          },
+          "datasources": [
+            "ds-chart-a8f63eec257d"
+          ]
+        },
+        {
+          "tile_id": "chart-3e048403ba4c",
+          "title": "Top 5 properties by revenue",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "PROPERTY_KEY",
+                "type": "nominal",
+                "title": "PROPERTY KEY"
+              },
+              "y": {
+                "field": "TOTAL_AMOUNT",
+                "type": "quantitative",
+                "title": "AMOUNT",
+                "axis": {},
+                "stack": false
+              },
+              "tooltip": [
+                {
+                  "field": "PROPERTY_KEY",
+                  "title": "PROPERTY KEY"
+                },
+                {
+                  "field": "TOTAL_AMOUNT",
+                  "title": "AMOUNT"
+                }
+              ],
+              "xOffset": {}
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": false
+                  }
+                },
+                "chartType": "grouped-bar"
+              }
+            }
+          },
+          "datasources": [
+            "ds-chart-3e048403ba4c"
+          ]
+        },
+        {
+          "tile_id": "chart-dbcad187f459",
+          "title": "total bookings",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": 400,
+            "height": 200,
+            "padding": 0,
+            "params": [
+              {
+                "name": "__scorecard_reveal",
+                "value": 1
+              },
+              {
+                "name": "__scorecard_pulse",
+                "value": 0
+              }
+            ],
+            "data": {
+              "name": "values"
+            },
+            "transform": [
+              {
+                "calculate": "(isValid(datum['TOTAL_BOOKING']) && isNumber(datum['TOTAL_BOOKING'])) ? format(datum['TOTAL_BOOKING'], ',.0~f') : 'N/A'",
+                "as": "bigNumberText"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__toneKey"
+              },
+              {
+                "calculate": "!(isValid(datum['TOTAL_BOOKING']) && isNumber(datum['TOTAL_BOOKING'])) ? '#5d6a85' : ('#1e252f')",
+                "as": "__numberColor"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__chartKey"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__lineColor"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__chartColor"
+              }
+            ],
+            "layer": [
+              {
+                "transform": [
+                  {
+                    "window": [
+                      {
+                        "op": "row_number",
+                        "as": "__row"
+                      }
+                    ]
+                  },
+                  {
+                    "filter": "datum.__row == 1"
+                  }
+                ],
+                "mark": {
+                  "type": "text",
+                  "align": "center",
+                  "baseline": "middle",
+                  "fontWeight": "bold",
+                  "fontSize": {
+                    "expr": "width >= 140 ? 40 : (width >= 90 ? 24 : 14)"
+                  },
+                  "limit": {
+                    "expr": "width - 8"
+                  },
+                  "color": {
+                    "expr": "datum['__numberColor']"
+                  }
+                },
+                "encoding": {
+                  "x": {
+                    "value": {
+                      "expr": "width / 2"
+                    }
+                  },
+                  "y": {
+                    "value": {
+                      "expr": "(height + 28) / 2"
+                    }
+                  },
+                  "text": {
+                    "field": "bigNumberText"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "view": {
+                "stroke": null
+              },
+              "mark": {
+                "tooltip": false
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  }
+                },
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "TOTAL_BOOKING",
+                  "labelField": "",
+                  "format": "decimal",
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "prevColumn": "",
+                  "seriesField": "",
+                  "seriesBucketField": "",
+                  "seriesValueField": "",
+                  "abbreviate": false
+                }
+              }
+            },
+            "title": ""
+          },
+          "datasources": [
+            "ds-chart-dbcad187f459"
+          ]
+        },
+        {
+          "tile_id": "chart-d668cb9d0508",
+          "title": "Total revenue generated",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": 400,
+            "height": 200,
+            "padding": 0,
+            "params": [
+              {
+                "name": "__scorecard_reveal",
+                "value": 1
+              },
+              {
+                "name": "__scorecard_pulse",
+                "value": 0
+              }
+            ],
+            "data": {
+              "name": "values"
+            },
+            "transform": [
+              {
+                "calculate": "(isValid(datum['TOTAL_REVENUE']) && isNumber(datum['TOTAL_REVENUE'])) ? '$' + format(datum['TOTAL_REVENUE'], ',.0~f') : 'N/A'",
+                "as": "bigNumberText"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__toneKey"
+              },
+              {
+                "calculate": "!(isValid(datum['TOTAL_REVENUE']) && isNumber(datum['TOTAL_REVENUE'])) ? '#5d6a85' : ('#1e252f')",
+                "as": "__numberColor"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__chartKey"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__lineColor"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__chartColor"
+              }
+            ],
+            "layer": [
+              {
+                "transform": [
+                  {
+                    "window": [
+                      {
+                        "op": "row_number",
+                        "as": "__row"
+                      }
+                    ]
+                  },
+                  {
+                    "filter": "datum.__row == 1"
+                  }
+                ],
+                "mark": {
+                  "type": "text",
+                  "align": "center",
+                  "baseline": "middle",
+                  "fontWeight": "bold",
+                  "fontSize": {
+                    "expr": "width >= 140 ? 40 : (width >= 90 ? 24 : 14)"
+                  },
+                  "limit": {
+                    "expr": "width - 8"
+                  },
+                  "color": {
+                    "expr": "datum['__numberColor']"
+                  }
+                },
+                "encoding": {
+                  "x": {
+                    "value": {
+                      "expr": "width / 2"
+                    }
+                  },
+                  "y": {
+                    "value": {
+                      "expr": "(height + 28) / 2"
+                    }
+                  },
+                  "text": {
+                    "field": "bigNumberText"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "view": {
+                "stroke": null
+              },
+              "mark": {
+                "tooltip": false
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  }
+                },
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "TOTAL_REVENUE",
+                  "labelField": "",
+                  "format": "currency",
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "prevColumn": "",
+                  "seriesField": "",
+                  "seriesBucketField": "",
+                  "seriesValueField": "",
+                  "abbreviate": false,
+                  "labelEnabled": false,
+                  "thresholdDirection": "higher-is-better"
+                }
+              }
+            },
+            "title": ""
+          },
+          "datasources": [
+            "ds-chart-d668cb9d0508"
+          ]
+        },
+        {
+          "tile_id": "chart-912d6f015953",
+          "title": "Avg nights stay",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": 400,
+            "height": 200,
+            "padding": 0,
+            "params": [
+              {
+                "name": "__scorecard_reveal",
+                "value": 1
+              },
+              {
+                "name": "__scorecard_pulse",
+                "value": 0
+              }
+            ],
+            "data": {
+              "name": "values"
+            },
+            "transform": [
+              {
+                "calculate": "(isValid(datum['AVG(NUMBER_OF_NIGHTS)']) && isNumber(datum['AVG(NUMBER_OF_NIGHTS)'])) ? format(datum['AVG(NUMBER_OF_NIGHTS)'], ',.2~f') : 'N/A'",
+                "as": "bigNumberText"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__toneKey"
+              },
+              {
+                "calculate": "!(isValid(datum['AVG(NUMBER_OF_NIGHTS)']) && isNumber(datum['AVG(NUMBER_OF_NIGHTS)'])) ? '#5d6a85' : ('#1e252f')",
+                "as": "__numberColor"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__chartKey"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__lineColor"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__chartColor"
+              }
+            ],
+            "layer": [
+              {
+                "transform": [
+                  {
+                    "window": [
+                      {
+                        "op": "row_number",
+                        "as": "__row"
+                      }
+                    ]
+                  },
+                  {
+                    "filter": "datum.__row == 1"
+                  }
+                ],
+                "mark": {
+                  "type": "text",
+                  "align": "center",
+                  "baseline": "middle",
+                  "fontWeight": "bold",
+                  "fontSize": {
+                    "expr": "width >= 140 ? 40 : (width >= 90 ? 24 : 14)"
+                  },
+                  "limit": {
+                    "expr": "width - 8"
+                  },
+                  "color": {
+                    "expr": "datum['__numberColor']"
+                  }
+                },
+                "encoding": {
+                  "x": {
+                    "value": {
+                      "expr": "width / 2"
+                    }
+                  },
+                  "y": {
+                    "value": {
+                      "expr": "(height + 28) / 2"
+                    }
+                  },
+                  "text": {
+                    "field": "bigNumberText"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "view": {
+                "stroke": null
+              },
+              "mark": {
+                "tooltip": false
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  }
+                },
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "AVG(NUMBER_OF_NIGHTS)",
+                  "labelField": "",
+                  "format": "decimal",
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "prevColumn": "",
+                  "seriesField": "",
+                  "seriesBucketField": "",
+                  "seriesValueField": "",
+                  "abbreviate": false,
+                  "decimals": 2
+                }
+              }
+            },
+            "title": ""
+          },
+          "datasources": [
+            "ds-chart-912d6f015953"
+          ]
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "tab-0": {
+      "meta": {
+        "default": true
+      },
+      "positions": {
+        "chart-a8f63eec257d": {
+          "x": 0,
+          "y": 2,
+          "w": 6,
+          "h": 3
+        },
+        "chart-3e048403ba4c": {
+          "x": 6,
+          "y": 2,
+          "w": 6,
+          "h": 3
+        },
+        "chart-dbcad187f459": {
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "chart-d668cb9d0508": {
+          "x": 3,
+          "y": 0,
+          "w": 6,
+          "h": 2
+        },
+        "chart-912d6f015953": {
+          "x": 9,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        }
+      }
+    }
+  },
+  "datasources": {
+    "ds-chart-a8f63eec257d": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "MNTH",
+          "type": "DATE"
+        },
+        {
+          "name": "TOTAL_AMOUNT",
+          "type": "NUMBER"
+        },
+        {
+          "name": "BOOKINGS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT \n    DATE_TRUNC('month', check_in_date) AS mnth,\n    ROUND(SUM(total_amount), 2) AS total_amount,\n    COUNT(booking_id) AS bookings\nFROM DWH_HOTEL_BOOKINGS.gold.fct_bookings\nGROUP BY DATE_TRUNC('month', check_in_date)\nORDER BY mnth\n;",
+      "filter_bindings": []
+    },
+    "ds-chart-3e048403ba4c": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "PROPERTY_KEY",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "PROPERTY_NAME",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "TOTAL_AMOUNT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    fb.property_key,\n    dp.property_name,\n    SUM(fb.total_amount) AS total_amount\nFROM DWH_HOTEL_BOOKINGS.gold.fct_bookings fb\nLEFT JOIN DWH_HOTEL_BOOKINGS.gold.dim_property dp\nON fb.property_key = dp.property_key\nWHERE fb.property_key IS NOT NULL\nGROUP BY fb.property_key, dp.property_name\nORDER BY total_amount DESC\nLIMIT 5\n;\n",
+      "filter_bindings": []
+    },
+    "ds-chart-dbcad187f459": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "TOTAL_BOOKING",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT COUNT(booking_id) AS total_booking \nFROM DWH_HOTEL_BOOKINGS.GOLD.FCT_BOOKINGS;",
+      "filter_bindings": []
+    },
+    "ds-chart-d668cb9d0508": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "TOTAL_REVENUE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT ROUND(SUM(total_amount), 2) AS total_revenue FROM DWH_HOTEL_BOOKINGS.GOLD.FCT_BOOKINGS;",
+      "filter_bindings": []
+    },
+    "ds-chart-912d6f015953": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "AVG(NUMBER_OF_NIGHTS)",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT AVG(number_of_nights) FROM dwh_hotel_bookings.gold.fct_bookings;",
+      "filter_bindings": []
+    }
+  }
+}

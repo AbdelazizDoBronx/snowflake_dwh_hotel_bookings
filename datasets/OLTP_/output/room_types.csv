@@ -1,0 +1,5 @@
+room_type_id,type,max_capacity,base_cost
+rtype_00001,Single,1,74.57
+rtype_00002,Double,2,147.03
+rtype_00003,Triple,3,209.65
+rtype_00004,Suite,4,498.97
